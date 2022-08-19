@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.edurda77.geolocation.databinding.FragmentHomeBinding
+import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.layers.ObjectEvent
+import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.RotationType
 import com.yandex.mapkit.mapview.MapView
@@ -46,11 +48,18 @@ class HomeFragment : Fragment(), UserLocationObjectListener {
 
         super.onViewCreated(view, savedInstanceState)
         mapView = binding.mapview
+        mapView.map.isRotateGesturesEnabled = false
         val mapKit = MapKitFactory.getInstance()
         mapKit.resetLocationManagerToDefault()
         userLocationLayer = mapKit.createUserLocationLayer(mapView.getMapWindow())
         userLocationLayer.isVisible = true
         userLocationLayer.isHeadingEnabled = true
+        userLocationLayer.setObjectListener(this)
+        mapView.map.move(
+            CameraPosition(mapView.map.cameraPosition.target,
+                10F, 0.0f, 0.0f),
+            Animation(Animation.Type.SMOOTH, 1F),
+            null)
     }
 
     override fun onStop() {
@@ -71,11 +80,11 @@ class HomeFragment : Fragment(), UserLocationObjectListener {
     }
 
     override fun onObjectAdded(userLocationView: UserLocationView) {
-        /*userLocationLayer.setAnchor(
+        userLocationLayer.setAnchor(
             PointF((mapView.width * 0.5).toFloat(), (mapView.height * 0.5).toFloat()),
             PointF((mapView.width * 0.5).toFloat(), (mapView.height * 0.83).toFloat())
         )
-        userLocationView.arrow.setIcon(
+        /*userLocationView.arrow.setIcon(
             ImageProvider.fromResource(
                 requireContext(), R.drawable.ic_menu_rotate
             )
@@ -83,7 +92,7 @@ class HomeFragment : Fragment(), UserLocationObjectListener {
         val pinIcon = userLocationView.pin.useCompositeIcon()
         pinIcon.setIcon(
             "icon",
-            ImageProvider.fromResource(requireContext(), R.drawable.ic_delete),
+            ImageProvider.fromResource(requireContext(), R.drawable.arrow_up_float),
             IconStyle().setAnchor(PointF(0f, 0f))
                 .setRotationType(RotationType.ROTATE)
                 .setZIndex(0f)
@@ -101,10 +110,8 @@ class HomeFragment : Fragment(), UserLocationObjectListener {
     }
 
     override fun onObjectRemoved(p0: UserLocationView) {
-        TODO("Not yet implemented")
     }
 
     override fun onObjectUpdated(p0: UserLocationView, p1: ObjectEvent) {
-        TODO("Not yet implemented")
     }
 }
