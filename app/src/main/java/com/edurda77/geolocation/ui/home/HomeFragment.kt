@@ -1,7 +1,5 @@
 package com.edurda77.geolocation.ui.home
 
-import android.R
-import android.graphics.Color
 import android.graphics.PointF
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,13 +11,10 @@ import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.CameraPosition
-import com.yandex.mapkit.map.IconStyle
-import com.yandex.mapkit.map.RotationType
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
-import com.yandex.runtime.image.ImageProvider
 
 
 class HomeFragment : Fragment(), UserLocationObjectListener {
@@ -36,7 +31,7 @@ class HomeFragment : Fragment(), UserLocationObjectListener {
     ): View {
         /*val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
-*/      MapKitFactory.setApiKey("a6d6e6e9-26d6-47e6-9ba9-95d317423e3a")
+*/
         MapKitFactory.initialize(requireContext())
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
