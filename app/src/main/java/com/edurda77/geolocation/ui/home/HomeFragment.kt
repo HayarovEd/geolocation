@@ -16,15 +16,15 @@ import com.yandex.mapkit.layers.GeoObjectTapListener
 import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.GeoObjectSelectionMetadata
-import com.yandex.mapkit.map.MapObject
-import com.yandex.mapkit.map.MapObjectTapListener
+import com.yandex.mapkit.map.InputListener
+import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
 
 
-class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListener {
+class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListener, InputListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -63,6 +63,7 @@ class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListene
             Animation(Animation.Type.SMOOTH, 1F),
             null)
         mapView.map.addTapListener(this)
+        mapView.map.addInputListener(this)
         //mapView.map.mapObjects.addPlacemark(Point(0.0, 10.0))
     }
 
@@ -105,8 +106,15 @@ class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListene
 
         mapView.map.selectGeoObject(selectionMetadata.id, selectionMetadata.layerId)
         Toast.makeText(context, selectionMetadata.id, Toast.LENGTH_LONG).show()
-
         return true
+    }
+
+    override fun onMapTap(p0: Map, p1: Point) {
+        //mapView.map.mapObjects.addPlacemark(p1)
+    }
+
+    override fun onMapLongTap(p0: Map, p1: Point) {
+        mapView.map.mapObjects.addPlacemark(p1)
     }
 
 }
