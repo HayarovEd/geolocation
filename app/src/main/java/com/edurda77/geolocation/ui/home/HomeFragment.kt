@@ -5,19 +5,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.edurda77.geolocation.databinding.FragmentHomeBinding
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.layers.GeoObjectTapEvent
+import com.yandex.mapkit.layers.GeoObjectTapListener
 import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.map.GeoObjectSelectionMetadata
+import com.yandex.mapkit.map.MapObject
+import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
 
 
-class HomeFragment : Fragment(), UserLocationObjectListener {
+class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -43,10 +50,10 @@ class HomeFragment : Fragment(), UserLocationObjectListener {
 
         super.onViewCreated(view, savedInstanceState)
         mapView = binding.mapview
-        mapView.map.isRotateGesturesEnabled = false
+        mapView.map.isRotateGesturesEnabled = true
         val mapKit = MapKitFactory.getInstance()
         mapKit.resetLocationManagerToDefault()
-        userLocationLayer = mapKit.createUserLocationLayer(mapView.getMapWindow())
+        userLocationLayer = mapKit.createUserLocationLayer(mapView.mapWindow)
         userLocationLayer.isVisible = true
         userLocationLayer.isHeadingEnabled = true
         userLocationLayer.setObjectListener(this)
@@ -55,6 +62,8 @@ class HomeFragment : Fragment(), UserLocationObjectListener {
                 10F, 0.0f, 0.0f),
             Animation(Animation.Type.SMOOTH, 1F),
             null)
+        mapView.map.addTapListener(this)
+        //mapView.map.mapObjects.addPlacemark(Point(0.0, 10.0))
     }
 
     override fun onStop() {
@@ -79,29 +88,7 @@ class HomeFragment : Fragment(), UserLocationObjectListener {
             PointF((mapView.width * 0.5).toFloat(), (mapView.height * 0.5).toFloat()),
             PointF((mapView.width * 0.5).toFloat(), (mapView.height * 0.83).toFloat())
         )
-        /*userLocationView.arrow.setIcon(
-            ImageProvider.fromResource(
-                requireContext(), R.drawable.ic_menu_rotate
-            )
-        )
-        val pinIcon = userLocationView.pin.useCompositeIcon()
-        pinIcon.setIcon(
-            "icon",
-            ImageProvider.fromResource(requireContext(), R.drawable.arrow_up_float),
-            IconStyle().setAnchor(PointF(0f, 0f))
-                .setRotationType(RotationType.ROTATE)
-                .setZIndex(0f)
-                .setScale(1f)
-        )
-        pinIcon.setIcon(
-            "pin",
-            ImageProvider.fromResource(requireContext(), R.drawable.ic_menu_upload),
-            IconStyle().setAnchor(PointF(0.5f, 0.5f))
-                .setRotationType(RotationType.ROTATE)
-                .setZIndex(1f)
-                .setScale(0.5f)
-        )
-        userLocationView.accuracyCircle.fillColor = Color.BLUE and -0x66000001*/
+
     }
 
     override fun onObjectRemoved(p0: UserLocationView) {
@@ -109,4 +96,17 @@ class HomeFragment : Fragment(), UserLocationObjectListener {
 
     override fun onObjectUpdated(p0: UserLocationView, p1: ObjectEvent) {
     }
+
+    override fun onObjectTap(p0: GeoObjectTapEvent): Boolean {
+        val selectionMetadata: GeoObjectSelectionMetadata = p0
+            .geoObject
+            .metadataContainer
+            .getItem(GeoObjectSelectionMetadata::class.java)
+
+        mapView.map.selectGeoObject(selectionMetadata.id, selectionMetadata.layerId)
+        Toast.makeText(context, selectionMetadata.id, Toast.LENGTH_LONG).show()
+
+        return true
+    }
+
 }
