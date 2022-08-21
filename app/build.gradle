@@ -59,10 +59,7 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.5.0-alpha02'
     kapt 'androidx.room:room-compiler:2.5.0-alpha02'
 
-    //Coin
-    def koin_version = "3.2.0"
-    implementation "io.insert-koin:koin-android:$koin_version"
-    implementation "io.insert-koin:koin-android-compat:$koin_version"
-    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
-    implementation "io.insert-koin:koin-androidx-navigation:$koin_version"
+    //Koin
+    implementation("io.insert-koin:koin-core:3.2.0")
+    implementation("io.insert-koin:koin-android:3.2.0")
 }

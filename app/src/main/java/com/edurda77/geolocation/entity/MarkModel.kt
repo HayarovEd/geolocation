@@ -12,9 +12,9 @@ data class MarkModel(
     @ColumnInfo(ID)
     val id : Int,
     @ColumnInfo(LONGITUDE)
-    val longitudeMark: Float,
+    val longitudeMark: Double,
     @ColumnInfo(LATITUDE)
-    val latitudeMark: Float,
+    val latitudeMark: Double,
     @ColumnInfo(TITLE)
     val titleMark: String? = null,
     @ColumnInfo(ANNOTATION)

@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.edurda77.geolocation.R
 import com.edurda77.geolocation.databinding.FragmentHomeBinding
+import com.edurda77.geolocation.entity.MarkModel
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -22,10 +24,12 @@ import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListener, InputListener {
 
+    private val homeViewModel: HomeViewModel by viewModel()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var mapView: MapView
@@ -36,9 +40,6 @@ class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListene
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        /*val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-*/
         MapKitFactory.initialize(requireContext())
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
@@ -64,8 +65,25 @@ class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListene
             null)
         mapView.map.addTapListener(this)
         mapView.map.addInputListener(this)
+        homeViewModel.markData.observe(viewLifecycleOwner) {
+            when (it) {
+                is StateHomeFragment.Loading -> {
+                    binding.progressbar.isVisible=true
+                }
+                is StateHomeFragment.Failure -> {
+                    binding.progressbar.isVisible=false
+                    Toast.makeText(binding.root.context, it.error.toString(), Toast.LENGTH_LONG).show()
+                }
+                is StateHomeFragment.Success -> {
+                    binding.progressbar.isVisible=false
+                    showSavedMarks(it.data)
+                }
+                is StateHomeFragment.Empty -> {}
+            }
+        }
         //mapView.map.mapObjects.addPlacemark(Point(0.0, 10.0))
     }
+
 
     override fun onStop() {
         mapView.onStop()
@@ -119,7 +137,29 @@ class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListene
         mark.setIcon(
             ImageProvider.fromResource(requireContext(), R.drawable.ic_location_map), styleMark
         )
-        val styleText = TextStyle().setPlacement(TextStyle.Placement.TOP). setSize(16F)
-        mark.setText("Mark", styleText)
+        //val styleText = TextStyle().setPlacement(TextStyle.Placement.TOP). setSize(16F)
+        //mark.setText("Mark", styleText)
+        homeViewModel.addMark(
+            MarkModel(
+            id=0,
+            longitudeMark = p1.longitude,
+            latitudeMark = p1.latitude,
+            titleMark = "",
+            annotationMark = ""
+        )
+        )
     }
+
+    private fun showSavedMarks(data: List<MarkModel>) {
+        data.forEach {
+            val styleMark = IconStyle().setScale(0.1F).setAnchor(PointF(0.5f, 1.0f))
+            val styleText = TextStyle().setPlacement(TextStyle.Placement.TOP). setSize(16F)
+            val mark = mapView.map.mapObjects.addPlacemark(Point(it.latitudeMark, it.longitudeMark))
+            mark.setIcon(
+                ImageProvider.fromResource(requireContext(), R.drawable.ic_location_map), styleMark
+            )
+            mark.setText("${it.titleMark}\n${it.annotationMark}", styleText)
+        }
+    }
+
 }
