@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.edurda77.geolocation.R
 import com.edurda77.geolocation.databinding.FragmentHomeBinding
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
@@ -14,14 +15,13 @@ import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.layers.GeoObjectTapEvent
 import com.yandex.mapkit.layers.GeoObjectTapListener
 import com.yandex.mapkit.layers.ObjectEvent
-import com.yandex.mapkit.map.CameraPosition
-import com.yandex.mapkit.map.GeoObjectSelectionMetadata
-import com.yandex.mapkit.map.InputListener
+import com.yandex.mapkit.map.*
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
+import com.yandex.runtime.image.ImageProvider
 
 
 class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListener, InputListener {
@@ -114,7 +114,12 @@ class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListene
     }
 
     override fun onMapLongTap(p0: Map, p1: Point) {
-        mapView.map.mapObjects.addPlacemark(p1)
+        val mark = mapView.map.mapObjects.addPlacemark(p1)
+        val styleMark = IconStyle().setScale(0.1F).setAnchor(PointF(0.5f, 1.0f))
+        mark.setIcon(
+            ImageProvider.fromResource(requireContext(), R.drawable.ic_location_map), styleMark
+        )
+        val styleText = TextStyle().setPlacement(TextStyle.Placement.TOP). setSize(16F)
+        mark.setText("Mark", styleText)
     }
-
 }

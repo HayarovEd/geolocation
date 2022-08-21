@@ -1,4 +1,4 @@
-package com.edurda77.geolocation
+package com.edurda77.geolocation.ui.home
 
 sealed class StateHomeFragment {
     object Loading : StateHomeFragment()
