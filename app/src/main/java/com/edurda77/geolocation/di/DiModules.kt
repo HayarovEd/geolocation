@@ -6,6 +6,7 @@ import com.edurda77.geolocation.db.MarkDao
 import com.edurda77.geolocation.db.RepositoryDbImpl
 import com.edurda77.geolocation.ui.dashboard.DashboardViewModel
 import com.edurda77.geolocation.ui.home.HomeViewModel
+import com.edurda77.geolocation.ui.mark.MarkViewModel
 import com.edurda77.geolocation.utils.DATABASE_NAME
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -29,4 +30,8 @@ val mapViewModelModule = module {
 
 val listViewModelModule = module {
     viewModel { DashboardViewModel(get()) }
+}
+
+val markViewModelModule = module {
+    viewModel { MarkViewModel(get()) }
 }

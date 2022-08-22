@@ -5,4 +5,6 @@
     <string name="latitude">широта</string>
     <string name="longitude">долгота</string>
     <string name="delete_mark">Удалить метку</string>
+    <string name="save">Save</string>
+    <string name="action_sfve">Сохранить</string>
 </resources>
