@@ -12,8 +12,10 @@ class MarksHolder(private val binding: ItemListMarkBinding) :
     fun bind(markModel: MarkModel) {
         binding.titleItem.text = markModel.titleMark
         binding.annotationMark.text = markModel.annotationMark
-        binding.latitudeMark.text = markModel.latitudeMark.toString()
-        binding.longitudeMark.text = markModel.longitudeMark.toString()
+        val latitudeItem = "Широта - ${markModel.latitudeMark}"
+        val longitudeItem = "Долгота - ${markModel.longitudeMark}"
+        binding.latitudeMark.text = latitudeItem
+        binding.longitudeMark.text = longitudeItem
     }
 
 }

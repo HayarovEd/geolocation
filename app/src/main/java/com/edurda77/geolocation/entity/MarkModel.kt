@@ -16,7 +16,7 @@ data class MarkModel(
     @ColumnInfo(LATITUDE)
     val latitudeMark: Double,
     @ColumnInfo(TITLE)
-    val titleMark: String? = null,
+    val titleMark: String? = "Без названия",
     @ColumnInfo(ANNOTATION)
-    val annotationMark: String? = null,
+    val annotationMark: String? = "Нет аннотации",
 ) : Serializable

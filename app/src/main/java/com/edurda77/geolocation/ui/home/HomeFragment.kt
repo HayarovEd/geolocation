@@ -60,7 +60,7 @@ class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListene
         userLocationLayer.setObjectListener(this)
         mapView.map.move(
             CameraPosition(mapView.map.cameraPosition.target,
-                10F, 0.0f, 0.0f),
+                12F, 0.0f, 0.0f),
             Animation(Animation.Type.SMOOTH, 1F),
             null)
         mapView.map.addTapListener(this)
