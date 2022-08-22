@@ -42,8 +42,6 @@ class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListene
     ): View {
         MapKitFactory.initialize(requireContext())
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-
         return binding.root
     }
 

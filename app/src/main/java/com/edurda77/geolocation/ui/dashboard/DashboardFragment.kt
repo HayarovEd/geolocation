@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.edurda77.geolocation.R
 import com.edurda77.geolocation.databinding.FragmentDashboardBinding
 import com.edurda77.geolocation.entity.MarkModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -63,7 +65,7 @@ class DashboardFragment : Fragment(), MarksAdapter.MarkClickDeleteInterface {
         val stateClickListener: MarksAdapter.OnStateClickListener =
             object : MarksAdapter.OnStateClickListener {
                 override fun onStateClick(markModel: MarkModel, position: Int) {
-
+                    view?.findNavController()?.navigate(R.id.action_navigation_dashboard_to_markFragment)
                 }
             }
         recyclerView.adapter = MarksAdapter(data, stateClickListener, this)
