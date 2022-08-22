@@ -1,8 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">geolocation</string>
-    <string name="title_home">Карта</string>
-    <string name="title_dashboard">Метки</string>
-    <string name="title_notifications">Notifications</string>
     <string name="title_mark">Имя метки</string>
     <string name="annotation">аннотация</string>
     <string name="latitude">широта</string>

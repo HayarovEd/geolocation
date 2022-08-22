@@ -11,7 +11,7 @@ class App: Application() {
         super.onCreate()
         startKoin {
             androidContext(this@App)
-            modules(listOf(mapViewModelModule, roomModule))
+            modules(listOf(mapViewModelModule, roomModule, listViewModelModule))
         }
 
         MapKitFactory.setApiKey("a6d6e6e9-26d6-47e6-9ba9-95d317423e3a")

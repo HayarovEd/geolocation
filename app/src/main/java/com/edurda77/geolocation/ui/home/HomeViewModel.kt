@@ -12,7 +12,7 @@ class HomeViewModel(private val repository:RepositoryDbImpl) : ViewModel() {
     private val _markData =
         MutableLiveData<StateHomeFragment>(StateHomeFragment.Empty)
     val markData = _markData
-    init {
+    fun getData() {
         _markData.value = StateHomeFragment.Loading
         viewModelScope.launch {
             try {

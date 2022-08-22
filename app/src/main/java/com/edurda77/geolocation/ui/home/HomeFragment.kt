@@ -65,6 +65,7 @@ class HomeFragment : Fragment(), UserLocationObjectListener, GeoObjectTapListene
             null)
         mapView.map.addTapListener(this)
         mapView.map.addInputListener(this)
+        homeViewModel.getData()
         homeViewModel.markData.observe(viewLifecycleOwner) {
             when (it) {
                 is StateHomeFragment.Loading -> {

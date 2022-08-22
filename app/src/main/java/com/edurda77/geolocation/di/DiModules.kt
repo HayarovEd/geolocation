@@ -28,5 +28,5 @@ val mapViewModelModule = module {
 }
 
 val listViewModelModule = module {
-    //viewModel { DashboardViewModel(get()) }
+    viewModel { DashboardViewModel(get()) }
 }
